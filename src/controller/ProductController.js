@@ -7,21 +7,23 @@ export default class ProductController {
     }
 
     static async createdProduct(req, res) {
-        const { name, mark, color, description, price } = req.body;
+        const { name, mark, color, type, description, price, imageUrl } = req.body;
         const data = new Product();
 
         data.name = name;
         data.mark = mark;
         data.color = color;
+        data.type = type;
         data.description = description;
         data.price = price;
+        data.imageUrl = imageUrl;
         const createdProduct = await Product.create(data);
 
         return res.json({ message: "Produto criado com sucesso!", data: createdProduct });
     }
 
     static async editProduct(req, res) {
-        const { _id, name, mark, color, description, price } = req.body;
+        const { _id, name, mark, color, type, description, price, imageUrl, releaseDate } = req.body;
         const product = await Product.findById(_id);
 
         if (!product) {
@@ -31,17 +33,20 @@ export default class ProductController {
         product.name = name;
         product.mark = mark;
         product.color = color;
+        product.type = type;
         product.description = description;
         product.price = price;
+        product.imageUrl = imageUrl;
+        product.releaseDate = releaseDate;
 
-        await Product.updateOne(product);
+        await product.save();
         const updatedProduct = await Product.findById(_id);
         return res.json({mesage: "Editado com sucesso!", updatedProduct})
     }
 
     static async deleteProduct(req, res) {
         const { id } = req.params;
-        await Product.findOneAndDelete(id);
+        await Product.findByIdAndDelete(id);
         return res.json({message: "Deletado com sucesso!"})
     }
 }

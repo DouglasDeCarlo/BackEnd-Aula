@@ -7,6 +7,7 @@ import { config } from "dotenv"
 config();
 import productRouter from './router/ProductRouter.js';
 import cors from 'cors';
+import userRouter from './router/UserRouter.js';
 
 const __filename = fileURLToPath(import.meta.url); // Converte a URL do módulo atual para um caminho de arquivo
 const __dirname = dirname(__filename); // Obtém o diretório do arquivo atual
@@ -17,8 +18,8 @@ const port = process.env.PORT || 8000; // Define a porta em que o servidor irá 
 app.use(cors()) // Habilita o CORS para permitir requisições de diferentes origens
 app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos da pasta 'public'
 app.use(express.json()) // Middleware para parsear o corpo das requisições como JSON
-
 app.use("/products", productRouter)
+app.use("/auth", userRouter)
 
 app.listen(port, () => { // Inicia o servidor e escuta na porta definida
     console.log(`Servidor rodando na porta ${port}`); // Imprime uma mensagem no console indicando que o servidor está rodando
